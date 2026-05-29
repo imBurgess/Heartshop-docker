@@ -318,7 +318,7 @@ const selectedSize = ref<string>("");
 // 只有一個尺寸時自動選取；無尺寸時預設 Free Size
 watch(availableSizes, (sizes) => {
   if (sizes.length === 1) {
-    selectedSize.value = sizes[0];
+    selectedSize.value = sizes[0]!;
   } else if (sizes.length === 0) {
     selectedSize.value = "Free Size";
   }

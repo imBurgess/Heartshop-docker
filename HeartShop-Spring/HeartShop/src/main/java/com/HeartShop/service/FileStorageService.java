@@ -1,6 +1,7 @@
 package com.HeartShop.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,9 +21,9 @@ public class FileStorageService {
     // 儲存根目錄
     private final Path fileStorageLocation;
 
-    public FileStorageService() {
-        // 預設儲存在專案執行目錄下的 uploads
-        this.fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
+    public FileStorageService(@Value("${app.upload-dir:uploads}") String uploadDir) {
+        // 預設 uploads/，EC2 上建議設定 UPLOAD_DIR=/home/ubuntu/heartshop/uploads
+        this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         
         log.info("初始化 FileStorageService，上傳目錄: {}", this.fileStorageLocation);
 

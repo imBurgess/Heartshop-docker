@@ -214,6 +214,7 @@ interface LoginResponseData {
     email: string;
     name: string;
     createdAt: string;
+    role?: string;
   };
 }
 

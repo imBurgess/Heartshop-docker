@@ -41,6 +41,9 @@ target/
 mvnw
 mvnw.cmd
 
+# 使用者上傳的圖片
+HeartShop-Spring/uploads/
+
 # Temporary files
 *.tmp
 *.temp

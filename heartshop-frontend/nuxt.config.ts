@@ -7,9 +7,10 @@ const rootDir = resolve(fileURLToPath(import.meta.url), "../../");
 
 // 從根目錄載入環境變數（涵蓋所有前綴，包含 DB_* 與 VITE_*）
 const env = loadEnv("", rootDir, "");
-const apiHost = env.VITE_API_BASE_URL || "http://localhost:8080";
+// process.env fallback 供 Docker 建置時使用（容器內無父目錄 .env）
+const apiHost = env.VITE_API_BASE_URL || process.env.VITE_API_BASE_URL || "http://localhost:8080";
 
-const adminUrl = env.VITE_ADMIN_URL || "http://localhost:5173";
+const adminUrl = env.VITE_ADMIN_URL || process.env.VITE_ADMIN_URL || "http://localhost:5173";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
@@ -66,6 +67,11 @@ export default defineNuxtConfig({
         target: `${apiHost}/api/uploads`,
         changeOrigin: true,
       },
+    },
+    // 生產環境：SSR 伺服器端呼叫 /api/* 時轉發至後端
+    routeRules: {
+      "/api/**": { proxy: `${apiHost}/api/**` },
+      "/uploads/**": { proxy: `${apiHost}/api/uploads/**` },
     },
   },
 });

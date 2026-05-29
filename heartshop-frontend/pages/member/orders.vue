@@ -297,7 +297,7 @@ const submitECPayForm = (actionUrl: string, params: Record<string, string>) => {
       const input = document.createElement('input')
       input.type = 'hidden'
       input.name = key
-      input.value = params[key]
+      input.value = params[key] ?? ''
       form.appendChild(input)
     }
   }

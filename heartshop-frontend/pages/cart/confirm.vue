@@ -196,7 +196,7 @@ const handleSubmit = async () => {
     if (res && res.paymentUrl && res.ecpayParams) {
       // 成功取得綠界參數，動態建立 form 並送出
       cartStore.clearCart();
-      localStorage.setItem("lastOrderNo", res.ecpayParams.MerchantTradeNo);
+      localStorage.setItem("lastOrderNo", res.ecpayParams["MerchantTradeNo"] ?? "");
       submitECPayForm(res.paymentUrl, res.ecpayParams);
     } else {
       message.error("訂單建立失敗，請稍後再試");
@@ -220,7 +220,7 @@ const submitECPayForm = (actionUrl: string, params: Record<string, string>) => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = key;
-      input.value = params[key];
+      input.value = params[key] ?? "";
       form.appendChild(input);
     }
   }

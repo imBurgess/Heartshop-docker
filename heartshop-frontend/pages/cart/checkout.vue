@@ -86,9 +86,9 @@
             <span class="infoLabel">地址</span>
             <span class="infoValue">{{ order.receiverAddress }}</span>
           </div>
-          <div v-if="order.receiverNote" class="infoRow">
+          <div v-if="order.remark" class="infoRow">
             <span class="infoLabel">備註</span>
-            <span class="infoValue">{{ order.receiverNote }}</span>
+            <span class="infoValue">{{ order.remark }}</span>
           </div>
         </div>
       </n-card>
