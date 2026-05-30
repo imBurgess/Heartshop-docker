@@ -15,6 +15,7 @@ copy .env.example .env
 
 DB_PASSWORD=你的資料庫密碼
 JWT_SECRET=任意長字串
+
 4. 啟動
 
 docker compose up --build
