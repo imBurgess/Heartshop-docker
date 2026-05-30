@@ -1,6 +1,7 @@
 新環境啟動步驟
+
 1. 安裝 Docker Desktop
-下載安裝後，確認 Docker Desktop 正在執行中。
+   下載安裝後，確認 Docker Desktop 正在執行中。
 
 2. Clone 專案
 
@@ -12,7 +13,6 @@ cd Heartshop-docker
 copy .env.example .env
 打開 .env，修改這兩行：
 
-
 DB_PASSWORD=你的資料庫密碼
 JWT_SECRET=任意長字串
 
@@ -22,49 +22,37 @@ docker compose up --build
 第一次約需 5～10 分鐘（下載 image、編譯 Java、npm install）
 
 啟動完成後開啟
-服務	網址
-前台	http://localhost:3000
-後台管理	http://localhost:5173
-後端 API	http://localhost:8080/api
+服務 網址
+前台 http://localhost:3400
+後台管理 http://localhost:5173
+後端 API http://localhost:8080/api
 常用指令
 
 # 背景執行
+
 docker compose up --build -d
 
 # 查看 log
+
 docker compose logs -f
 
 # 停止
+
 docker compose down
 
 # 完全重置（含資料庫）
+
 docker compose down -v
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 1. nuxt.config.ts
-新增 dir 設定，告訴 Nuxt 去哪裡找 layout：
-
+   新增 dir 設定，告訴 Nuxt 去哪裡找 layout：
 
 dir: {
-  layouts: "Layouts",
-},
-2. Layouts/default.vue
+layouts: "Layouts",
+}, 2. Layouts/default.vue
 把三個地方的 Naive UI 元件包上 <ClientOnly>：
 
 ① 通知鈴鐺（n-popover）
-
 
 <ClientOnly>
   <n-popover ...> ... </n-popover>
@@ -74,12 +62,10 @@ dir: {
 </ClientOnly>
 ② 購物車數量 badge（n-badge）
 
-
 <ClientOnly>
   <n-badge v-if="cartStore.totalQty > 0" .../>
 </ClientOnly>
 ③ 會員下拉選單（n-dropdown）
-
 
 <ClientOnly>
   <n-dropdown ...> ... </n-dropdown>
@@ -89,7 +75,6 @@ dir: {
 </ClientOnly>
 ④ 購物說明 & 關於我們 dropdown
 
-
 <ClientOnly>
   <n-dropdown ...> ... </n-dropdown>
   <template #fallback>
@@ -97,7 +82,6 @@ dir: {
   </template>
 </ClientOnly>
 ⑤ 登入彈窗（LoginRegister / n-modal）
-
 
 <ClientOnly>
   <LoginRegister v-model:show="showLogin" .../>
