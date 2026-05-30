@@ -6,6 +6,7 @@
 
 git clone https://github.com/imBurgess/Heartshop-docker.git
 cd Heartshop-docker
+
 3. 設定環境變數
 
 copy .env.example .env
