@@ -15,6 +15,10 @@ const adminUrl = env.VITE_ADMIN_URL || process.env.VITE_ADMIN_URL || "http://loc
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
 
+  dir: {
+    layouts: "Layouts",
+  },
+
   runtimeConfig: {
     public: {
       adminUrl,

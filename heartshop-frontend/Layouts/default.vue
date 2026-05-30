@@ -23,57 +23,62 @@
               <button type="submit">search</button>
             </form>
 
-            <n-popover
-              trigger="hover"
-              placement="bottom-end"
-              :show-arrow="false"
-              :raw="true"
-              @update:show="onNotifPopoverShow"
-            >
-              <template #trigger>
-                <div class="icon-btn notification" style="position: relative; cursor: pointer;" aria-label="消息中心">
-                  <n-badge
-                    v-if="notificationStore.unreadCount > 0"
-                    :value="notificationStore.unreadCount"
-                    :max="99"
-                    style="position: absolute; top: -5px; right: -5px;"
-                  />
-                </div>
-              </template>
-
-              <div class="notif-dropdown">
-                <div class="notif-header">
-                  <span class="notif-header-title">消息通知</span>
-                  <button
-                    v-if="notificationStore.unreadCount > 0"
-                    class="notif-read-all"
-                    @click="notificationStore.markAllRead()"
-                  >全部已讀</button>
-                </div>
-
-                <div v-if="!isLoggedIn" class="notif-empty">請先登入查看消息</div>
-                <template v-else>
-                  <div v-if="notificationStore.items.length === 0" class="notif-empty">目前沒有消息</div>
-                  <div v-else class="notif-list">
-                    <div
-                      v-for="item in notificationStore.items.slice(0, 5)"
-                      :key="item.notificationId"
-                      class="notif-item"
-                      :class="{ 'notif-unread': !item.isRead }"
-                      @click="onNotifClick(item)"
-                    >
-                      <div class="notif-item-title">{{ item.title }}</div>
-                      <div class="notif-item-content">{{ item.content }}</div>
-                      <div class="notif-item-time">{{ formatNotifTime(item.createdAt) }}</div>
-                    </div>
-                  </div>
-                  <div class="notif-footer">
-                    <span v-if="notifNoMsgTip" class="notif-no-msg-tip">目前沒有消息</span>
-                    <a class="notif-all-link" @click.prevent="handleViewAll">查看全部 →</a>
+            <ClientOnly>
+              <n-popover
+                trigger="hover"
+                placement="bottom-end"
+                :show-arrow="false"
+                :raw="true"
+                @update:show="onNotifPopoverShow"
+              >
+                <template #trigger>
+                  <div class="icon-btn notification" style="position: relative; cursor: pointer;" aria-label="消息中心">
+                    <n-badge
+                      v-if="notificationStore.unreadCount > 0"
+                      :value="notificationStore.unreadCount"
+                      :max="99"
+                      style="position: absolute; top: -5px; right: -5px;"
+                    />
                   </div>
                 </template>
-              </div>
-            </n-popover>
+
+                <div class="notif-dropdown">
+                  <div class="notif-header">
+                    <span class="notif-header-title">消息通知</span>
+                    <button
+                      v-if="notificationStore.unreadCount > 0"
+                      class="notif-read-all"
+                      @click="notificationStore.markAllRead()"
+                    >全部已讀</button>
+                  </div>
+
+                  <div v-if="!isLoggedIn" class="notif-empty">請先登入查看消息</div>
+                  <template v-else>
+                    <div v-if="notificationStore.items.length === 0" class="notif-empty">目前沒有消息</div>
+                    <div v-else class="notif-list">
+                      <div
+                        v-for="item in notificationStore.items.slice(0, 5)"
+                        :key="item.notificationId"
+                        class="notif-item"
+                        :class="{ 'notif-unread': !item.isRead }"
+                        @click="onNotifClick(item)"
+                      >
+                        <div class="notif-item-title">{{ item.title }}</div>
+                        <div class="notif-item-content">{{ item.content }}</div>
+                        <div class="notif-item-time">{{ formatNotifTime(item.createdAt) }}</div>
+                      </div>
+                    </div>
+                    <div class="notif-footer">
+                      <span v-if="notifNoMsgTip" class="notif-no-msg-tip">目前沒有消息</span>
+                      <a class="notif-all-link" @click.prevent="handleViewAll">查看全部 →</a>
+                    </div>
+                  </template>
+                </div>
+              </n-popover>
+              <template #fallback>
+                <div class="icon-btn notification" aria-label="消息中心"></div>
+              </template>
+            </ClientOnly>
 
             <NuxtLink
               to="/cart"
@@ -81,17 +86,24 @@
               aria-label="購物車"
               style="position: relative;"
             >
-              <n-badge v-if="cartStore.totalQty > 0" :value="cartStore.totalQty" :max="99" style="position: absolute; top: -5px; right: -5px;" />
+              <ClientOnly>
+                <n-badge v-if="cartStore.totalQty > 0" :value="cartStore.totalQty" :max="99" style="position: absolute; top: -5px; right: -5px;" />
+              </ClientOnly>
             </NuxtLink>
 
-            <n-dropdown
-              trigger="hover"
-              placement="bottom-end"
-              :options="memberOptions"
-              @select="handleMemberSelect"
-            >
-              <button class="icon-btn user" aria-label="會員中心"></button>
-            </n-dropdown>
+            <ClientOnly>
+              <n-dropdown
+                trigger="hover"
+                placement="bottom-end"
+                :options="memberOptions"
+                @select="handleMemberSelect"
+              >
+                <button class="icon-btn user" aria-label="會員中心"></button>
+              </n-dropdown>
+              <template #fallback>
+                <button class="icon-btn user" aria-label="會員中心"></button>
+              </template>
+            </ClientOnly>
           </div>
 
           <!-- 中：導覽列 -->
@@ -136,25 +148,35 @@
               </li>
 
               <li>
-                <n-dropdown
-                  trigger="hover"
-                  placement="bottom-start"
-                  :options="buyContentOptions"
-                  @select="buyContentSelect"
-                >
-                  <button type="button" class="nav-link-btn">購物說明</button>
-                </n-dropdown>
+                <ClientOnly>
+                  <n-dropdown
+                    trigger="hover"
+                    placement="bottom-start"
+                    :options="buyContentOptions"
+                    @select="buyContentSelect"
+                  >
+                    <button type="button" class="nav-link-btn">購物說明</button>
+                  </n-dropdown>
+                  <template #fallback>
+                    <button type="button" class="nav-link-btn">購物說明</button>
+                  </template>
+                </ClientOnly>
               </li>
 
               <li>
-                <n-dropdown
-                  trigger="hover"
-                  placement="bottom-start"
-                  :options="aboutUsOptions"
-                  @select="aboutUsSelect"
-                >
-                  <button type="button" class="nav-link-btn">關於我們</button>
-                </n-dropdown>
+                <ClientOnly>
+                  <n-dropdown
+                    trigger="hover"
+                    placement="bottom-start"
+                    :options="aboutUsOptions"
+                    @select="aboutUsSelect"
+                  >
+                    <button type="button" class="nav-link-btn">關於我們</button>
+                  </n-dropdown>
+                  <template #fallback>
+                    <button type="button" class="nav-link-btn">關於我們</button>
+                  </template>
+                </ClientOnly>
               </li>
             </ul>
           </nav>
@@ -163,10 +185,12 @@
     </header>
 
     <!-- 會員登入 / 註冊彈窗 -->
-    <LoginRegister
-      v-model:show="showLogin"
-      @login-success="handleLoginSuccess"
-    />
+    <ClientOnly>
+      <LoginRegister
+        v-model:show="showLogin"
+        @login-success="handleLoginSuccess"
+      />
+    </ClientOnly>
 
     <main>
       <slot />
