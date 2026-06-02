@@ -13,7 +13,7 @@ cd Heartshop-docker
 copy .env.example .env
 打開 .env，修改這兩行：
 
-DB_PASSWORD=你的資料庫密碼
+DB_PASSWORD=admin123
 JWT_SECRET=任意長字串
 
 4. 啟動
